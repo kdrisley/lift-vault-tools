@@ -3,7 +3,7 @@
  * Plugin Name:       Lift Vault Tools
  * Plugin URI:        https://liftvault.com/
  * Description:        Native, in-browser strength tools (plate loader, 1RM, DOTS, …) delivered by a single [lv_tool] shortcode. Replaces the Google-Sheets-in-an-iframe calculators with real, indexable, on-device instruments.
- * Version:           0.11.3
+ * Version:           0.11.4
  * Author:            Lift Vault
  * License:           GPL-2.0-or-later
  * Requires PHP:      7.2
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LVT_VERSION', '0.11.3' );
+define( 'LVT_VERSION', '0.11.4' );
 define( 'LVT_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LVT_URL', plugin_dir_url( __FILE__ ) );
 
@@ -60,7 +60,7 @@ function lvt_registry() {
 			'title'   => 'Warmup Set Calculator',
 		),
 		'weight-class-selector' => array(
-			'version' => '0.1.1',
+			'version' => '0.1.2',
 			'js'      => 'tools/weight-class-selector.js',
 			'title'   => 'Powerlifting Weight Class Calculator',
 		),

@@ -4,7 +4,8 @@
  * much room you have under the limit, and how much you'd cut to drop a class.
  *
  * Class limits (kg) verified against federation rulebooks:
- *   IPF / USAPL (unchanged since 2019), USPA / IPL, WRPF.
+ *   IPF (unchanged since 2019; Powerlifting America uses them in the US), USPA / IPL, WRPF.
+ *   USAPL split from the IPF in 2021 and runs its own old-style list (not included).
  * Classes are officially in kg (IPF and WRPF are kg-only), so results are
  * shown in kg regardless of the input unit.
  *
@@ -17,7 +18,7 @@
 
 	// Finite class limits in kg (ascending). The heaviest class is "limit+".
 	var FEDS = {
-		ipf: { label: 'IPF / USAPL', m: [59, 66, 74, 83, 93, 105, 120], f: [47, 52, 57, 63, 69, 76, 84] },
+		ipf: { label: 'IPF', m: [59, 66, 74, 83, 93, 105, 120], f: [47, 52, 57, 63, 69, 76, 84] },
 		uspa: { label: 'USPA / IPL', m: [52, 56, 60, 67.5, 75, 82.5, 90, 100, 110, 125, 140], f: [44, 48, 52, 56, 60, 67.5, 75, 82.5, 90, 100, 110] },
 		wrpf: { label: 'WRPF', m: [52, 56, 60, 67.5, 75, 82.5, 90, 100, 110, 125, 140], f: [44, 48, 52, 56, 60, 67.5, 75, 82.5, 90] }
 	};
@@ -107,7 +108,7 @@
 
 	var def = {
 		id: 'weight-class-selector',
-		version: '0.1.1',
+		version: '0.1.2',
 		title: 'Powerlifting Weight Class Calculator',
 		units: ['kg', 'lb'],
 		convertOnUnitChange: true,
@@ -117,7 +118,7 @@
 			] },
 			{ id: 'bodyweight', label: 'Bodyweight', type: 'number', min: 20, max: { kg: 300, lb: 660 }, step: 0.5, def: { kg: 90, lb: 200 } },
 			{ id: 'fed', label: 'Federation', type: 'select', convert: false, def: 'ipf', opts: [
-				{ value: 'ipf', label: 'IPF / USAPL' }, { value: 'uspa', label: 'USPA / IPL' }, { value: 'wrpf', label: 'WRPF' }
+				{ value: 'ipf', label: 'IPF' }, { value: 'uspa', label: 'USPA / IPL' }, { value: 'wrpf', label: 'WRPF' }
 			] }
 		],
 		compute: computeClass,
