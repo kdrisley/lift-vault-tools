@@ -1,0 +1,235 @@
+/* Lift Vault Tools — design system
+ * Light-first (the site is light), sized to the post content column, mobile-first.
+ * Everything is namespaced under .lvt and driven by custom properties so Metro Pro's
+ * CSS can't leak in and a future dark theme is a single [data-theme] flip — no visible
+ * toggle is shipped today because the surrounding site is light-only.
+ * ------------------------------------------------------------------------------------ */
+
+.lvt {
+	/* neutrals — cool graphite/steel on chalk */
+	--lvt-ground: #f4f6f7;
+	--lvt-surface: #ffffff;
+	--lvt-raised: #eef1f3;
+	--lvt-hair: #d7dde2;
+	--lvt-hair-2: #c2cad1;
+	--lvt-ink: #16191d;
+	--lvt-ink-mid: #4a535b;
+	--lvt-ink-dim: #71797f;
+
+	/* brand accent — heaviest-plate red, deepened for contrast on white */
+	--lvt-heat: #cf3325;
+	--lvt-heat-deep: #a5271b;
+
+	/* calibrated plate hues (functional) */
+	--lvt-pl-red: #d43a2f;
+	--lvt-pl-blue: #2f6fd0;
+	--lvt-pl-yellow: #e8b53a;
+	--lvt-pl-green: #2f9e57;
+	--lvt-pl-white: #ffffff;
+	--lvt-pl-dark: #3a4046;
+	--lvt-pl-silver: #9aa3ab;
+
+	--lvt-ok: #2f9e57;
+	--lvt-warn: #b9781a;
+
+	--lvt-mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+	--lvt-r: 6px;
+
+	box-sizing: border-box;
+	max-width: 100%;
+	margin: 1.6em 0;
+	color: var(--lvt-ink);
+	font-family: inherit; /* inherit the site body face */
+	line-height: 1.5;
+}
+.lvt *, .lvt *::before, .lvt *::after { box-sizing: border-box; }
+
+/* the live interactive panel */
+.lvt .lvt-panel {
+	background: var(--lvt-surface);
+	border: 1px solid var(--lvt-hair);
+	border-radius: var(--lvt-r);
+	overflow: hidden;
+}
+.lvt .lvt-head {
+	display: flex; align-items: center; gap: 9px;
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--lvt-hair);
+	background: var(--lvt-raised);
+}
+.lvt .lvt-head::before {
+	content: ""; width: 7px; height: 7px; border-radius: 50%;
+	background: var(--lvt-heat);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--lvt-heat) 20%, transparent);
+	flex: none;
+}
+.lvt .lvt-title {
+	font-family: var(--lvt-mono);
+	font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
+	color: var(--lvt-ink); font-weight: 600;
+}
+
+.lvt .lvt-controls-host { padding: 16px; }
+.lvt .lvt-controls {
+	display: grid; gap: 14px;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+.lvt .lvt-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.lvt .lvt-field label,
+.lvt .lvt-field .lvt-lab {
+	font-family: var(--lvt-mono);
+	font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+	color: var(--lvt-ink-dim);
+}
+
+/* screen-reader-only live region: announces "results updated" without re-reading whole tables */
+.lvt .lvt-sr-live {
+	position: absolute; width: 1px; height: 1px; overflow: hidden;
+	clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.lvt .lvt-field input,
+.lvt .lvt-field select {
+	font-family: var(--lvt-mono);
+	font-size: 16px; /* 16px avoids iOS zoom-on-focus */
+	color: var(--lvt-ink);
+	background: var(--lvt-ground);
+	border: 1px solid var(--lvt-hair-2);
+	border-radius: var(--lvt-r);
+	padding: 11px 12px;
+	width: 100%;
+	min-height: 44px; /* touch target */
+	font-variant-numeric: tabular-nums;
+	-webkit-appearance: none; appearance: none;
+}
+.lvt .lvt-field select {
+	background-image: linear-gradient(45deg, transparent 50%, var(--lvt-ink-dim) 50%), linear-gradient(135deg, var(--lvt-ink-dim) 50%, transparent 50%);
+	background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+	background-size: 5px 5px, 5px 5px;
+	background-repeat: no-repeat;
+	padding-right: 34px;
+}
+.lvt .lvt-field input:focus,
+.lvt .lvt-field select:focus {
+	outline: 2px solid var(--lvt-heat);
+	outline-offset: 1px;
+	border-color: transparent;
+}
+
+/* segmented unit control */
+.lvt .lvt-seg {
+	display: inline-flex; border: 1px solid var(--lvt-hair-2);
+	border-radius: 999px; overflow: hidden; background: var(--lvt-ground);
+}
+.lvt .lvt-seg button {
+	font-family: var(--lvt-mono);
+	font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+	color: var(--lvt-ink-dim); background: transparent; border: none;
+	padding: 10px 16px; min-height: 40px; cursor: pointer;
+}
+.lvt .lvt-seg button[aria-pressed="true"] { color: #fff; background: var(--lvt-heat); }
+.lvt .lvt-seg button:focus-visible { outline: 2px solid var(--lvt-heat); outline-offset: 2px; }
+
+/* readout */
+.lvt .lvt-readout { padding: 4px 16px 18px; }
+
+/* plate loader viz */
+.lvt .lvt-bar-stage {
+	background: var(--lvt-ground); border: 1px solid var(--lvt-hair);
+	border-radius: var(--lvt-r); padding: 16px 8px; overflow-x: auto;
+}
+.lvt .lvt-bar-lane { display: flex; align-items: center; justify-content: center; min-height: 138px; min-width: min-content; }
+.lvt .lvt-sleeve { display: flex; align-items: center; height: 13px; background: linear-gradient(var(--lvt-pl-silver), #6b747c); border-radius: 2px; }
+.lvt .lvt-barnub { width: 28px; height: 8px; background: linear-gradient(#9aa3ab, #6b747c); border-radius: 2px; }
+.lvt .lvt-plate {
+	display: flex; align-items: center; justify-content: center;
+	border-radius: 3px; margin: 0 1.5px;
+	border: 1px solid rgba(0,0,0,.32); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+	font-family: var(--lvt-mono); font-size: 10px; font-weight: 700;
+}
+.lvt .lvt-plate span { transform: rotate(-90deg); white-space: nowrap; }
+.lvt .lvt-plate.c-red { background: var(--lvt-pl-red); color: #fff; }
+.lvt .lvt-plate.c-blue { background: var(--lvt-pl-blue); color: #fff; }
+.lvt .lvt-plate.c-yellow { background: var(--lvt-pl-yellow); color: #1a1a1a; }
+.lvt .lvt-plate.c-green { background: var(--lvt-pl-green); color: #fff; }
+.lvt .lvt-plate.c-white { background: var(--lvt-pl-white); color: #1a1a1a; border-color: var(--lvt-hair-2); }
+.lvt .lvt-plate.c-dark { background: var(--lvt-pl-dark); color: #eef1f3; }
+.lvt .lvt-plate.c-silver { background: var(--lvt-pl-silver); color: #1a1a1a; }
+
+.lvt .lvt-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.lvt .lvt-chip {
+	font-family: var(--lvt-mono); font-size: 11.5px;
+	border: 1px solid var(--lvt-hair); border-radius: 999px;
+	padding: 5px 11px; color: var(--lvt-ink-mid); background: var(--lvt-ground);
+	display: inline-flex; gap: 7px; align-items: center;
+}
+.lvt .lvt-chip em { color: var(--lvt-ink-dim); font-style: normal; }
+.lvt .lvt-swatch { width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(0,0,0,.28); }
+
+.lvt .lvt-note {
+	font-family: var(--lvt-mono); font-size: 12px;
+	margin-top: 12px; padding: 10px 12px; border-radius: var(--lvt-r);
+	border: 1px solid var(--lvt-hair); color: var(--lvt-ink-mid); background: var(--lvt-ground);
+}
+.lvt .lvt-note.ok { border-color: color-mix(in srgb, var(--lvt-ok) 45%, var(--lvt-hair)); color: var(--lvt-ok); }
+.lvt .lvt-note.warn { border-color: color-mix(in srgb, var(--lvt-warn) 45%, var(--lvt-hair)); color: var(--lvt-warn); }
+
+/* ---- shared readout primitives (reused by calculator-style tools) ---- */
+
+/* two-column readout: stat + curve on the left, table on the right; stacks on mobile */
+.lvt .lvt-readout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+
+/* big numeric stat */
+.lvt .lvt-stat-label { font-family: var(--lvt-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--lvt-ink-dim); }
+.lvt .lvt-stat-num { font-family: var(--lvt-mono); font-variant-numeric: tabular-nums; font-weight: 700; line-height: 1; letter-spacing: -.02em; color: var(--lvt-ink); font-size: clamp(2.2rem, 7vw, 3rem); margin-top: 4px; }
+.lvt .lvt-stat-u { font-size: .34em; color: var(--lvt-ink-dim); letter-spacing: .08em; margin-left: 7px; }
+.lvt .lvt-stat-basis { font-family: var(--lvt-mono); font-size: 11.5px; color: var(--lvt-ink-dim); margin-top: 8px; }
+
+/* horizontal mini bar chart */
+.lvt .lvt-bars { margin-top: 16px; }
+.lvt .lvt-bars-label { font-family: var(--lvt-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--lvt-ink-dim); margin-bottom: 8px; }
+.lvt .lvt-bar-row { display: grid; grid-template-columns: 46px 1fr 60px; align-items: center; gap: 10px; font-family: var(--lvt-mono); font-size: 11.5px; font-variant-numeric: tabular-nums; margin: 2px 0; }
+.lvt .lvt-bar-label { color: var(--lvt-ink-dim); }
+.lvt .lvt-bar-track { height: 16px; background: var(--lvt-ground); border: 1px solid var(--lvt-hair); border-radius: 3px; overflow: hidden; }
+.lvt .lvt-bar-fill { display: block; height: 100%; background: linear-gradient(90deg, var(--lvt-heat-deep), var(--lvt-heat)); }
+.lvt .lvt-bar-val { text-align: right; color: var(--lvt-ink); }
+
+/* live-readout data table (distinct from the SSR .lvt-fallback table) */
+.lvt .lvt-table { border-collapse: collapse; width: 100%; font-family: var(--lvt-mono); font-size: 12.5px; font-variant-numeric: tabular-nums; border: 1px solid var(--lvt-hair); border-radius: var(--lvt-r); overflow: hidden; }
+.lvt .lvt-table th, .lvt .lvt-table td { padding: 7px 12px; text-align: right; border-bottom: 1px solid var(--lvt-hair); white-space: nowrap; }
+.lvt .lvt-table th { color: var(--lvt-ink-dim); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; font-size: 10px; background: var(--lvt-raised); }
+.lvt .lvt-table td:first-child, .lvt .lvt-table th:first-child { text-align: left; color: var(--lvt-ink); }
+.lvt .lvt-table td.dim { color: var(--lvt-ink-dim); }
+.lvt .lvt-table tr:last-child td { border-bottom: none; }
+.lvt .lvt-table tr.hl td { background: color-mix(in srgb, var(--lvt-heat) 10%, transparent); color: var(--lvt-ink); }
+
+@media (max-width: 600px) {
+	.lvt .lvt-readout-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+/* server-rendered fallback: styled so it looks intentional if JS never runs */
+.lvt .lvt-fallback { }
+.lvt .lvt-fallback table { border-collapse: collapse; width: 100%; font-family: var(--lvt-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.lvt .lvt-fallback th, .lvt .lvt-fallback td { padding: 8px 12px; text-align: right; border-bottom: 1px solid var(--lvt-hair); }
+.lvt .lvt-fallback th:first-child, .lvt .lvt-fallback td:first-child { text-align: left; }
+.lvt .lvt-fallback th { color: var(--lvt-ink-dim); text-transform: uppercase; font-size: 10.5px; letter-spacing: .06em; }
+.lvt .lvt-fallback caption { text-align: left; color: var(--lvt-ink-mid); font-size: 13px; margin-bottom: 8px; }
+
+/* mobile: stack the 2-column readouts some tools use */
+@media (max-width: 600px) {
+	.lvt .lvt-controls { grid-template-columns: 1fr 1fr; }
+	.lvt .lvt-field-units { grid-column: 1 / -1; }
+	/* wide data tables (attempt planner's 4-col grid, warmup plates) scroll inside
+	   themselves instead of getting cut off by the viewport */
+	.lvt .lvt-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+	.lvt .lvt-table th, .lvt .lvt-table td { padding: 6px 8px; }
+}
+
+@media print {
+	.lvt .lvt-seg, .lvt .lvt-controls-host { display: none; }
+	.lvt .lvt-panel { border-color: #000; }
+	.lvt .lvt-fallback[hidden] { display: block !important; } /* print the reference tables */
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lvt * { transition: none !important; animation: none !important; }
+}
