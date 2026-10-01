@@ -3,7 +3,7 @@
  * Plugin Name:       Lift Vault Tools
  * Plugin URI:        https://liftvault.com/
  * Description:        Native, in-browser strength tools (plate loader, 1RM, DOTS, …) delivered by a single [lv_tool] shortcode. Replaces the Google-Sheets-in-an-iframe calculators with real, indexable, on-device instruments.
- * Version:           0.11.4
+ * Version:           0.12.0
  * Author:            Lift Vault
  * License:           GPL-2.0-or-later
  * Requires PHP:      7.2
@@ -14,17 +14,21 @@
  * plugins screen as "Lift Vault Tools". Source of truth lives in the lift-vault repo at
  * lv-tools-plugin/. If a security audit finds it, it is known-good — see this repo's TOOLING.md.
  * It registers ONE shortcode, enqueues its own static assets, and exposes one public read-only REST
- * route (/wp-json/lv-tools/v1/version). It writes no options, creates no tables, and touches no
- * other post's content.
+ * route (/wp-json/lv-tools/v1/version). Since v0.12.0 it also adds an authenticated `lv_archive`
+ * REST field on public taxonomy terms (includes/archive-meta.php) so the archive-refresh tooling can
+ * edit Genesis archive intros + Yoast term titles; it is edit-capability gated and never public.
+ * It creates no tables and touches no post content.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LVT_VERSION', '0.11.4' );
+define( 'LVT_VERSION', '0.12.0' );
 define( 'LVT_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LVT_URL', plugin_dir_url( __FILE__ ) );
+
+require_once LVT_DIR . 'includes/archive-meta.php';
 
 /**
  * The tool registry. This MUST mirror the JS tool modules in assets/tools/. Adding a tool means:
