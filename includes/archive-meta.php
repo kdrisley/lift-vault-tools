@@ -73,6 +73,10 @@ add_action( 'rest_api_init', function () {
 				$existing = WPSEO_Taxonomy_Meta::get_term_meta( (int) $term->term_id, $term->taxonomy );
 				WPSEO_Taxonomy_Meta::set_values( $term->term_id, $term->taxonomy, array_merge( is_array( $existing ) ? $existing : array(), $yoast ) );
 			}
+			// Yoast renders from its indexables table, not the option above; its term watcher only
+			// rebuilds the indexable on `edited_term`. Fire it (no term row change) so the new
+			// title/description and any intro change reach the rendered <head>.
+			do_action( 'edited_term', $term->term_id, $term->term_taxonomy_id, $term->taxonomy, array() );
 			return true;
 		},
 		'schema'          => array(
